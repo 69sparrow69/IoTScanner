@@ -1,0 +1,46 @@
+SUMMARY
+
+The IoT Scanner will scan the IP addresses you list in the "IP_Addresses.txt" file, and scan the TCP and UDP ports for those IP addresses. The TCP and UDP ports to be scanned are extracted from the MUD file (.json extension) that you reference. The results show two things:
+
+1. The status of the TCP and UDP ports on the IoT device - closed, filtered, open.
+2a. A comparison the total open ports on the IoT device, with the ports that are mentioned on the MUD file.
+2b. If the NUMBER of ports (e.g. TCP) on the IoT device are more than the NUMBER of ports (e.g. TCP) in the MUD file, the device is considired non-compliant.
+2c. If the NUMBER of ports (e.g. TCP) in the MUD file are more than the NUMBER of ports (e.g. TCP) on the IoT device, the device is considired over protected.
+
+PRE-REQUISITES
+A. You need to fill in your target IP addresses in the "IP_Addresses.txt" file
+B. You need to choose your desired MUD file to scan the IoT device
+C. Both the MUD file and the "IP_Addresses.txt" file, must be in the SAME DIRECTORY as your "IoT.py" file
+
+IMPORTANT:
+
+1. The IoT Scanner ("IoT.py") needs the "IP_Addresses.txt" populated with the list of IP addresses to scan. Only put ONE IP ADDRESS per line.
+2. The MUD file (.json extension) must be in the same directory as the IoT.py file. Make sure you extract the correct MUD file from the "MUD Files" folder, depending on your need.
+
+Please understand that every time you run the "IoT.py" file, you can only use a single MUD file to scan the IP addresses in the "IP_Addresses.txt" file.
+Therefore, the IP addresses you scan must be of the TYPE of device you use the MUD file for.
+
+E.g. If you're scanning Amazon Echo devices, makes sure you only have IP addresses for Amazon Echo devices in your "IP_Addresses.txt" file, and have the "amazonEchoMud.json" file in the same directory as "IoT.py". DO NOT mix IP addresses of different types (e.g. Belkin Camera, Amazon Echo IP addresses) in the "IP_Addresses.txt" file.
+
+SCANNER DETAILS:
+
+These are the helper functions in the Scanner.
+
+jsonPorter: This function takes the ‘configx’ argument, which is the
+MUD file that we are using for our IoT device. It extracts source
+TCP ports from the MUD file (that should be allowed) and puts it in
+the uniqueMUDtcp array and does the same for source UDP ports
+and puts it in the uniqueMUDudp array.
+
+nmapScan: This function takes arguments to run an nmap scan. The
+‘ip’ is for the IP address to scan. The ‘portList’ is the array of ports
+that nmap runs on and ‘flags’ are the flags for the nmap scan.
+
+nmapFullScan: This function does an nmap scan on the ‘ip’
+argument, using the ‘flags’ that are passed to it. No port selection for
+this function. Only open ports will be shown for simplicity.
+
+masterScanner: This function takes the ‘inputtedIP’ parameter as
+the IP to scan and the ‘inputtedMUD’ parameter as the MUD file to
+use. This calls the other 3 helper functions to deliver our results in
+the end.
